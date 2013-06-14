@@ -1,20 +1,15 @@
 package org.mongo.controller;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import org.apache.commons.lang.LocaleUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.mongo.domain.Campaign;
+import org.mongo.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -43,7 +38,7 @@ public class HomeController {
 		Elements links = doc.select("a.news_item");
 		for (Element element : links) {
 			String hrefAttribute = element.attr("href");
-			String item = parseQueryString(hrefAttribute,"item");
+			String item = CommonUtils.parseQueryString(hrefAttribute,"item");
 			Element titleElement = element.select(".title").first();
 			String titleText = titleElement.text();
 			String dmsText = titleElement.children().first().text();
@@ -68,20 +63,9 @@ public class HomeController {
 			
 			lstCampaigns.add(campaign);
 		}
-		Locale locale = LocaleUtils.toLocale("bg_BG");
 		
 		return lstCampaigns;
     }
-	private String parseQueryString(String queryString,String key) {
-		List<NameValuePair> lstValues = URLEncodedUtils.parse(queryString, Charset.forName("UTF-8"));
-		for (NameValuePair nameValuePair : lstValues) {
-			if(nameValuePair.getName().equalsIgnoreCase(key)){
-				return nameValuePair.getValue();
-			}
-		}
-		return StringUtils.EMPTY;
-		 
-	}
 	
 	
 	@RequestMapping(value = "/testString",method=RequestMethod.GET)
