@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 /**
  * Handles requests for the application home page.
  */
@@ -35,15 +32,5 @@ public class HomeController {
 		List<Campaign> lstCampaigns = CommonUtils.parseCampaignByPage(page,type);
 		return lstCampaigns;
 	}
-	
-	
-	@RequestMapping(value = "/testString",method=RequestMethod.GET)
-    @ResponseBody
-	public String getAandB()  {
-		ObjectNode node = JsonNodeFactory.instance.objectNode();
-		node.put("a", "a");
-		node.put("b", "b");
-		return  "a";
-    }
 	
 }
