@@ -19,6 +19,13 @@ import org.slf4j.LoggerFactory;
 
 public class CommonUtils {
 	private static final Logger logger = LoggerFactory.getLogger(CommonUtils.class);
+	/**
+	 * Parsing sum correctly because sometimes is in format: 
+	 "25 000 е вро"
+	 "25 000 лева"
+	 * @param sum
+	 * @return
+	 */
 	public static final String parseSum(String sum){
 		if(StringUtils.isBlank(sum)){
 			return StringUtils.EMPTY;
