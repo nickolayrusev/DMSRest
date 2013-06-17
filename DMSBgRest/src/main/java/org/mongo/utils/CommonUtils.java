@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.mongo.domain.Campaign;
+import org.mongo.utils.Constants;
 
 public class CommonUtils {
 
@@ -32,11 +33,18 @@ public class CommonUtils {
 		}
 		return StringUtils.EMPTY;
 	}
+	/**
+	 * spage (type of campaign) :
+	 * 0 - people ; 1 - organization ; 2 - other
+	 * @param page
+	 * @param type
+	 * @return list of campaigns
+	 */
 	public static List<Campaign> parseCampaignByPage(Integer page,Integer type){
 		List<Campaign> lstCampaigns = new ArrayList<Campaign>(); 
 		Document doc = null;
 		try {
-			doc = Jsoup.connect("http://dmsbg.com/index.php?page=4&spage="+String.valueOf(type)+"&p="+String.valueOf(page)).get();
+			doc = Jsoup.connect(Constants.WEBSITE + "?page=4&spage="+String.valueOf(type)+"&p="+String.valueOf(page)).get();
 		} catch (IOException e) {
 			return Collections.emptyList();
 		}

@@ -1,5 +1,9 @@
 package org.mongo.domain;
-
+/**
+ * base entity class for campaign
+ * @author rusev
+ *
+ */
 public class Campaign {
 	private String title;
 	private String description;
