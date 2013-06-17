@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mongo.config.RootConfig;
 import org.mongo.config.WebConfig;
+import org.mongo.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public  class RestTest {
 		this.mvc = webAppContextSetup(this.wac).build();
 	}
 	@Test
-	public void campaigns() throws Exception {
+	public void campaignsWithoutParams() throws Exception {
 		MvcResult andReturn = this.mvc
 				.perform(get("/campaign").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
@@ -46,11 +47,28 @@ public  class RestTest {
 	}
 	
 	@Test
-	public void testString() throws Exception {
+	public void campaignsPeople() throws Exception {
 		MvcResult andReturn = this.mvc
-				.perform(get("/testString").accept(MediaType.APPLICATION_JSON))
+				.perform(get("/campaign?type=0&page=0").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 		logger.info("response as string:"
 				+ andReturn.getResponse().getContentAsString());
 	}
+	@Test
+	public void campaignsOrganizations() throws Exception {
+		MvcResult andReturn = this.mvc
+				.perform(get("/campaign?type=1&page=0").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andReturn();
+		logger.info("response as string:"
+				+ andReturn.getResponse().getContentAsString());
+	}
+	
+	@Test
+	public void testSum() throws Exception {
+		String first = CommonUtils.parseSum("25 000 е вро");
+		String second = CommonUtils.parseSum("25 000 лева");
+		logger.info(first);
+		logger.info(second);
+	}
+	
 }

@@ -27,8 +27,7 @@ public class HomeController {
 			@RequestParam(required = false, value = "page") Integer page,
 			@RequestParam(required = false, value = "type") Integer type)
 			throws IOException {
-		logger.info("page is: " + page);
-		logger.info("type is: " + type);
+		logger.info("page is: " + page + "type is: " + type);
 		List<Campaign> lstCampaigns = CommonUtils.parseCampaignByPage(page,type);
 		return lstCampaigns;
 	}

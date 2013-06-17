@@ -14,17 +14,32 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.mongo.domain.Campaign;
-import org.mongo.utils.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommonUtils {
-
+	private static final Logger logger = LoggerFactory.getLogger(CommonUtils.class);
+	public static final String parseSum(String sum){
+		if(StringUtils.isBlank(sum)){
+			return StringUtils.EMPTY;
+		}
+		sum = sum.replace(".", StringUtils.EMPTY) ;
+		for (int i = sum.length()-1; i >= 0 ; i--) {
+			if(Character.isDigit(sum.charAt(i))){
+				String letters = sum.substring(i+1,sum.length()).replace(" ",	StringUtils.EMPTY);
+				String digits = sum.substring(0,i+1);
+				return digits + " " +letters;
+			}
+		}
+		return StringUtils.EMPTY;
+	}
 	/**
 	 * Parse query string and returns value by key
 	 * @param queryString
 	 * @param key
 	 * @return the value, or empty string if not found
 	 */
-	public static String parseQueryString(String queryString,String key) {
+	public static final String parseQueryString(String queryString,String key) {
 		List<NameValuePair> lstValues = URLEncodedUtils.parse(queryString, Charset.forName("UTF-8"));
 		for (NameValuePair nameValuePair : lstValues) {
 			if(nameValuePair.getName().equalsIgnoreCase(key)){
@@ -40,14 +55,20 @@ public class CommonUtils {
 	 * @param type
 	 * @return list of campaigns
 	 */
-	public static List<Campaign> parseCampaignByPage(Integer page,Integer type){
+	public static final List<Campaign> parseCampaignByPage(Integer page,Integer type){
+		type = type==null ? 0 : type;
+		page = page==null ? 0 : page;
 		List<Campaign> lstCampaigns = new ArrayList<Campaign>(); 
+		
 		Document doc = null;
 		try {
 			doc = Jsoup.connect(Constants.WEBSITE + "?page=4&spage="+String.valueOf(type)+"&p="+String.valueOf(page)).get();
+			logger.info("hitting url: " + doc.baseUri());
 		} catch (IOException e) {
+			logger.error("io exc",e);
 			return Collections.emptyList();
 		}
+		
 		Elements links = doc.select("a.news_item");
 		for (Element element : links) {
 			String hrefAttribute = element.attr("href");
@@ -69,7 +90,7 @@ public class CommonUtils {
 			campaign.setTitle(titleText);
 			campaign.setText(dmsText);
 			campaign.setDescription(anonceText);
-			campaign.setSum(sumText);
+			campaign.setSum(parseSum(sumText));
 			campaign.setDate(dateText);
 			campaign.setSmallImageUrl(imgUrl);
 			campaign.setBigImageUrl(imgUrl.replace("file1", "file2"));
