@@ -3,6 +3,8 @@ package org.mongo.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.mongo.domain.Campaign;
 import org.mongo.utils.CommonUtils;
 import org.slf4j.Logger;
@@ -25,10 +27,11 @@ public class HomeController {
 	@ResponseBody
 	public List<Campaign> campaigns(
 			@RequestParam(required = false, value = "page") Integer page,
-			@RequestParam(required = false, value = "type") Integer type)
+			@RequestParam(required = false, value = "type") Integer type, HttpServletResponse response)
 			throws IOException {
 		logger.info("page is: " + page + "type is: " + type);
-		List<Campaign> lstCampaigns = CommonUtils.parseCampaignByPage(page,type);
+		page = page==null || page<=1 ? 1 : page;
+		List<Campaign> lstCampaigns = CommonUtils.parseCampaignByPage(page-1,type);
 		return lstCampaigns;
 	}
 	

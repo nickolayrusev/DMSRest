@@ -17,6 +17,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		logger.info(request.getRequestURL().toString());
+		response.setHeader("Access-Control-Allow-Origin", "*");
 		return true;
 		
 	}
