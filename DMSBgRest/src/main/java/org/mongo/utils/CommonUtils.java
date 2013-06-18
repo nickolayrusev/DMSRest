@@ -94,13 +94,14 @@ public class CommonUtils {
 			
 			Campaign campaign = new Campaign();
 			campaign.setId(Long.parseLong(item));
-			campaign.setTitle(titleText);
+			campaign.setTitle(titleText.split(" - ")[0]);
 			campaign.setText(dmsText);
 			campaign.setDescription(anonceText);
 			campaign.setSum(parseSum(sumText));
 			campaign.setDate(dateText);
 			campaign.setSmallImageUrl(imgUrl);
 			campaign.setBigImageUrl(imgUrl.replace("file1", "file2"));
+			
 			
 			lstCampaigns.add(campaign);
 		}

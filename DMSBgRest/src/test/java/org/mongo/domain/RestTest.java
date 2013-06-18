@@ -49,7 +49,7 @@ public  class RestTest {
 	@Test
 	public void campaignsPeople() throws Exception {
 		MvcResult andReturn = this.mvc
-				.perform(get("/campaign?type=0&page=0").accept(MediaType.APPLICATION_JSON))
+				.perform(get("/campaign?type=0&page=4").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 		logger.info("response as string:"
 				+ andReturn.getResponse().getContentAsString());
