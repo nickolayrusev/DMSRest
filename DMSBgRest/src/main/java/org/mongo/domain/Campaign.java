@@ -13,6 +13,7 @@ public class Campaign {
 	private Long id;
 	private String smallImageUrl;
 	private String bigImageUrl;
+	private String campaignUrl;
 	
 	public String getDescription() {
 		return description;
@@ -61,6 +62,12 @@ public class Campaign {
 	}
 	public void setBigImageUrl(String bigImageUrl) {
 		this.bigImageUrl = bigImageUrl;
+	}
+	public String getCampaignUrl() {
+		return campaignUrl;
+	}
+	public void setCampaignUrl(String campaignUrl) {
+		this.campaignUrl = campaignUrl;
 	}
 
 }

@@ -69,7 +69,7 @@ public class CommonUtils {
 		
 		Document doc = null;
 		try {
-			doc = Jsoup.connect(Constants.WEBSITE + "?page=4&spage="+String.valueOf(type)+"&p="+String.valueOf(page)).get();
+			doc = Jsoup.connect(Constants.WEBSITE + "index.php?page=4&spage="+String.valueOf(type)+"&p="+String.valueOf(page)).get();
 			logger.info("hitting url: " + doc.baseUri());
 		} catch (IOException e) {
 			logger.error("io exc",e);
@@ -101,7 +101,7 @@ public class CommonUtils {
 			campaign.setDate(dateText);
 			campaign.setSmallImageUrl(imgUrl);
 			campaign.setBigImageUrl(imgUrl.replace("file1", "file2"));
-			
+			campaign.setCampaignUrl(Constants.WEBSITE+hrefAttribute);
 			
 			lstCampaigns.add(campaign);
 		}
