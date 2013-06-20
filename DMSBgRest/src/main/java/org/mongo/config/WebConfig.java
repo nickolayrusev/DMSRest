@@ -3,7 +3,6 @@ package org.mongo.config;
 import java.util.List;
 
 import org.mongo.interceptor.LoggerInterceptor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
@@ -16,22 +15,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"org.mongo"}, excludeFilters = { @Filter(Configuration.class) })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-	@Bean
-	public InternalResourceViewResolver resolver(){
-		InternalResourceViewResolver res = new InternalResourceViewResolver();
-		res.setSuffix(".jsp");
-		res.setPrefix("/WEB-INF/views/");
-		return res;
-		
-	}
-	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/").addResourceLocations("/resourses/**");

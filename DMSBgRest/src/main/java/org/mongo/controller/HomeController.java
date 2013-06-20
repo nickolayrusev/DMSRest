@@ -28,8 +28,9 @@ public class HomeController {
 	@ResponseBody
 	public List<Campaign> campaigns(
 			@RequestParam(required = false, value = "page") Integer page,
-			@RequestParam(required = false, value = "type") Integer type)
+			@RequestParam(required = true, value = "type") Integer type)
 			throws IOException {
+		
 		logger.info("page is: " + page + "type is: " + type);
 		//page = page==null || page<=1 ? 1 : page;
 		int firstPage = (page-1) * 2;
