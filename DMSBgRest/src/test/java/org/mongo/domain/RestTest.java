@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.net.URLEncoder;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +43,7 @@ public  class RestTest {
 	public void campaignsWithoutParams() throws Exception {
 		MvcResult andReturn = this.mvc
 				.perform(get("/campaign").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andReturn();
+				.andExpect(status().isBadRequest()).andReturn();
 		logger.info("response as string:"
 				+ andReturn.getResponse().getContentAsString());
 	}
@@ -69,6 +71,12 @@ public  class RestTest {
 		String second = CommonUtils.parseSum("25 000 лева");
 		logger.info(first);
 		logger.info(second);
+	}
+	
+	@Test
+	public void testUrl() throws Exception {
+		String encode = URLEncoder.encode("http://dmsbg.com/index.php?page=4&spage=0&item=373&p=0&bgtext=йасасйаисйайсавявя", "UTF-8");
+		System.out.println(encode);
 	}
 	
 }

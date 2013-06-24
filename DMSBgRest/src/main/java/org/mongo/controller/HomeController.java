@@ -27,8 +27,8 @@ public class HomeController {
 	@RequestMapping(value = "/campaign", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Campaign> campaigns(
-			@RequestParam(required = false, value = "page") Integer page,
-			@RequestParam(required = true, value = "type") Integer type)
+			@RequestParam(required = true, value = "page") Integer page,
+			@RequestParam(required = false, value = "type") Integer type)
 			throws IOException {
 		
 		logger.info("page is: " + page + "type is: " + type);
