@@ -1,10 +1,17 @@
 package org.mongo.domain;
+
+import java.io.Serializable;
+
 /**
  * base entity class for campaign
  * @author rusev
  *
  */
-public class Campaign {
+public class Campaign implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -901554024642240179L;
 	private String title;
 	private String description;
 	private String date;

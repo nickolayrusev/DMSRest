@@ -40,7 +40,6 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		eTagFilter.addMappingForUrlPatterns(null, true, "/*");
 		
 		
-
 		if (!mappingConflicts.isEmpty()) {
 			throw new IllegalStateException("'appServlet' cannot be mapped to '/' under Tomcat versions <= 7.0.14");
 		}

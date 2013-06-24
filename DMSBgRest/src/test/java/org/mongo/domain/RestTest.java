@@ -4,7 +4,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.net.SocketAddress;
 import java.net.URLEncoder;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import net.spy.memcached.MemcachedClient;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,6 +39,9 @@ public  class RestTest {
 	private WebApplicationContext wac;
 
 	private MockMvc mvc;
+	
+	@Autowired
+	MemcachedClient memCachier;
 
 	@Before
 	public void setUp() {
@@ -59,7 +67,7 @@ public  class RestTest {
 	@Test
 	public void campaignsOrganizations() throws Exception {
 		MvcResult andReturn = this.mvc
-				.perform(get("/campaign?type=1&page=0").accept(MediaType.APPLICATION_JSON))
+				.perform(get("/campaign?type=1&page=1").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn();
 		logger.info("response as string:"
 				+ andReturn.getResponse().getContentAsString());
@@ -77,6 +85,29 @@ public  class RestTest {
 	public void testUrl() throws Exception {
 		String encode = URLEncoder.encode("http://dmsbg.com/index.php?page=4&spage=0&item=373&p=0&bgtext=йасасйаисйайсавявя", "UTF-8");
 		System.out.println(encode);
+	}
+	@Test
+	public void testSetMemcachier() throws Exception {
+		memCachier.set("a", 0, "avalue");
+		
+	}
+	@Test
+	public void testGetMemcachier() throws Exception {
+		System.out.println(memCachier.get("a"));
+		
+	}
+	@Test
+	public void testDaysToSeconds() throws Exception {
+		System.out.println(TimeUnit.HOURS.toSeconds(8) );
+		
+	}
+	
+	@Test
+	public void testgetStatsFromMemcachier(){
+		Map<SocketAddress, Map<String, String>> stats = memCachier.getStats();
+		for (Map.Entry<SocketAddress,Map<String, String>> entry : stats.entrySet()) {
+			System.out.println("Key: " + entry.getKey() + " Value: " + entry.getValue());
+		}
 	}
 	
 }
