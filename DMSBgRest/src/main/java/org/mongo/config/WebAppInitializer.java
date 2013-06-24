@@ -7,6 +7,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
+import net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter;
+
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -38,6 +40,11 @@ public class WebAppInitializer implements WebApplicationInitializer {
 		FilterRegistration.Dynamic eTagFilter = servletContext.addFilter(
 				"eTagFilter", new ShallowEtagHeaderFilter());
 		eTagFilter.addMappingForUrlPatterns(null, true, "/*");
+		
+		
+		FilterRegistration.Dynamic gzipFilter = servletContext.addFilter(
+				"gzipFilter", new SimplePageCachingFilter());
+		gzipFilter.addMappingForUrlPatterns(null, true, "/*");
 		
 		
 		if (!mappingConflicts.isEmpty()) {
