@@ -1,5 +1,7 @@
 package org.mongo.config;
 
+
+import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
 import net.spy.memcached.ConnectionFactoryBuilder.Locator;
 import net.spy.memcached.FailureMode;
@@ -7,8 +9,9 @@ import net.spy.memcached.HashAlgorithm;
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.auth.AuthDescriptor;
 import net.spy.memcached.auth.PlainCallbackHandler;
-import net.spy.memcached.spring.MemcachedClientFactoryBean;
+import net.spy.memcached.transcoders.Transcoder;
 
+import org.mongo.utils.CustomSerializingTranscoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,20 +35,30 @@ public class RootConfig {
 						env.getProperty("memcachier.password")));
 		return ad;
 	}
-
+	/**
+	 * https://code.google.com/p/spymemcached/wiki/SpringIntegration
+	 * @return
+	 * @throws Exception
+	 */
 	public @Bean
 		MemcachedClient memCachier() throws Exception {
-		MemcachedClientFactoryBean factoryBean = new MemcachedClientFactoryBean();
-		factoryBean.setAuthDescriptor(descriptor());
-		factoryBean.setProtocol(ConnectionFactoryBuilder.Protocol.BINARY);
-		factoryBean.setServers(env.getProperty("memcachier.server"));
-		factoryBean.setUseNagleAlgorithm(false);
-		factoryBean.setHashAlg(HashAlgorithm.KETAMA_HASH);
-		factoryBean.setOpTimeout(1000);
-		factoryBean.setLocatorType(Locator.CONSISTENT);
-		factoryBean.setFailureMode(FailureMode.Redistribute);
-		factoryBean.setTimeoutExceptionThreshold(1998);
-		return (MemcachedClient) factoryBean.getObject();
+		MemcachedClient mc = new MemcachedClient(new ConnectionFactoryBuilder()
+				.setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
+				.setAuthDescriptor(descriptor())
+				.setFailureMode(FailureMode.Redistribute)
+				.setHashAlg(HashAlgorithm.KETAMA_HASH)
+				.setUseNagleAlgorithm(false)
+				.setLocatorType(Locator.CONSISTENT)
+				.setOpTimeout(1000)
+				.setTranscoder(transcoder())
+				.setTimeoutExceptionThreshold(1998).build(),
+				AddrUtil.getAddresses(env.getProperty("memcachier.server")));
+		 return mc;
+	}
+	Transcoder<Object> transcoder(){
+		CustomSerializingTranscoder transcoder = new CustomSerializingTranscoder();
+		transcoder.setCompressionThreshold(1000);
+		return transcoder;
 	}
 	
 	

@@ -93,7 +93,7 @@ public  class RestTest {
 	}
 	@Test
 	public void testGetMemcachier() throws Exception {
-		System.out.println(memCachier.get("a"));
+		System.out.println(memCachier.get("11"));
 		
 	}
 	@Test
