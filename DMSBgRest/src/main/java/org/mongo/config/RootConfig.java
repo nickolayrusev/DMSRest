@@ -12,20 +12,31 @@ import net.spy.memcached.auth.PlainCallbackHandler;
 import net.spy.memcached.transcoders.Transcoder;
 
 import org.mongo.utils.CustomSerializingTranscoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @PropertySource({"classpath:social.properties"})
 @ComponentScan(basePackages={"org.mongo.service","org.mongo.domain"})
+@EnableScheduling
 public class RootConfig {
-	 
+	
 	@Autowired
 	Environment env;
+	
+	protected static Logger logger = LoggerFactory
+			.getLogger(RootConfig.class);
+	
+	/*public @Bean SchedulerService service(){
+		return new SchedulerService();
+	}*/
 	
 	public @Bean
 	AuthDescriptor descriptor() {
