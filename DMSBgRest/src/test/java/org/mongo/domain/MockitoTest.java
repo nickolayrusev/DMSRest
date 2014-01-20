@@ -51,13 +51,13 @@ public class MockitoTest {
 		MockitoAnnotations.initMocks(this);
 		List<Campaign> lstCampaign = new ArrayList<Campaign>();
 		Campaign camp1 = new Campaign();
-		camp1.setDescription("leeds");
+		camp1.setDescription("leeds united");
 
 		Campaign camp2 = new Campaign();
-		camp2.setDescription("manchester southampton");
+		camp2.setDescription("manchester united southampton");
 
 		Campaign camp3 = new Campaign();
-		camp3.setDescription("stoke");
+		camp3.setDescription("stoke sunderland");
 		
 		lstCampaign.add(camp1);
 		lstCampaign.add(camp2);
@@ -101,8 +101,10 @@ public class MockitoTest {
         w.close();
         System.out.println("index generated");
         // parse query over multiple fields
-        Query q = new MultiFieldQueryParser(new String[]{"title"},
-                analyzer).parse("s*");
+        MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(new String[]{"title"},
+                analyzer);
+        multiFieldQueryParser.setAllowLeadingWildcard(true);
+        Query q = multiFieldQueryParser.parse("*ted*");
  
         // searching ...
         int hitsPerPage = 10;
@@ -119,7 +121,6 @@ public class MockitoTest {
             System.out.println((i + 1) + ". " +  ": "
                     + d.get("title"));
         }
- 
 	}
     
 }
