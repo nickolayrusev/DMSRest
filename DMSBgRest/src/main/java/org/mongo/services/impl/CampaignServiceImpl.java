@@ -18,10 +18,14 @@ public class CampaignServiceImpl implements CampaignService {
 	
 	@Autowired
 	MemcachedClient memCachier;
-
+	/**
+	 * Getting campaigns by page and type and store the list of campaigns into 
+	 * memcachier cache .
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Campaign> getCampaigns(Integer type, Integer page) {
+		//cache key is in format two digits (type and page) . ex: 01,12
 		String cacheKey = String.valueOf(page)+String.valueOf(type);
 		if(memCachier.get(cacheKey)==null){
 			logger.info("storing in cache");

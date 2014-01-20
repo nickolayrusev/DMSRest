@@ -76,5 +76,12 @@ public class Campaign implements Serializable {
 	public void setCampaignUrl(String campaignUrl) {
 		this.campaignUrl = campaignUrl;
 	}
-
+	@Override
+	public String toString() {
+		return "Campaign [title=" + title + ", description=" + description
+				+ ", date=" + date + ", sum=" + sum + ", text=" + text
+				+ ", id=" + id + ", smallImageUrl=" + smallImageUrl
+				+ ", bigImageUrl=" + bigImageUrl + ", campaignUrl="
+				+ campaignUrl + "]";
+	}
 }

@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Scheduler for handling jobs
+ * Scheduler for handling batch jobs. This class is not used at the prod application
  */
 public class SchedulerService {
 

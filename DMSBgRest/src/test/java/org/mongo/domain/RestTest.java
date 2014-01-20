@@ -29,17 +29,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.itextpdf.text.pdf.PdfDictionary;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.PdfContentReaderTool;
 import com.itextpdf.text.pdf.parser.PdfReaderContentParser;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
-import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
 @WebAppConfiguration
 @ContextConfiguration( classes={WebConfig.class,RootConfig.class})
