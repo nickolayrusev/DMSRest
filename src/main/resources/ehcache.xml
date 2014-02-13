@@ -1,0 +1,16 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd">
+<diskStore path="auto/default/path"/>
+ <defaultCache
+   eternal="false"
+   timeToIdleSeconds="5"
+   timeToLiveSeconds="10">
+   </defaultCache>
+   />
+  <!-- Page and Page Fragment Caches -->
+  <cache name="SimplePageCachingFilter"
+  eternal="false"
+  timeToIdleSeconds="10000"
+  timeToLiveSeconds="10000">
+</cache>
+</ehcache>
