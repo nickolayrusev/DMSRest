@@ -19,7 +19,7 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
 		logger.info(request.getRequestURL().toString());
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		return true;
-
+		
 	}
 	
 	@Override
@@ -27,8 +27,8 @@ public class LoggerInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		logger.info("logger interceptor",modelAndView);
-
-
+		
+		  
 	}  
 
 }

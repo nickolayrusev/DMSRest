@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.mongo.domain.Campaign;
+import org.mongo.index.IndexComponent;
 import org.mongo.services.CampaignService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +29,16 @@ public class HomeController {
 	@Autowired
 	CampaignService campaignService;
 	
+	@Autowired
+	IndexComponent component;
+	
 	@RequestMapping(value = "/campaign", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Campaign> campaigns(
 			@RequestParam(required = true, value = "page") Integer page,
 			@RequestParam(required = true, value = "type") Integer type)
-					throws IOException {
+			throws IOException {
+		
 		logger.info("page is: " + page + "type is: " + type);
 		//page = page==null || page<=1 ? 1 : page;
 		int firstPage = (page-1) * 2;
@@ -45,5 +50,26 @@ public class HomeController {
 		logger.info("first list size: "+lstCampaignsFirstPage.size() +" second list size: "+lstCampaignsSecondPage.size()+" merged list size: "+mergedList.size());
 		return mergedList;
 	}
+	
+	@RequestMapping(value = "/testjenkins", method = RequestMethod.GET)
+	@ResponseBody
+	public String testJenkins(@RequestParam(value="q",required=false)String query) throws IOException{
+			
+			return "success"+query + " " + component.getAllIndexedCampaignIds();
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Campaign> searchCampaigns(
+			@RequestParam(value="term")String term,
+			@RequestParam(value="type",required=true)List<Integer> type)
+					throws IOException{
+		logger.info("term is: " + term);
+		logger.info("type is: " + type);
+		
+		List<Campaign> searchCampaigns = component.searchCampaigns(term,type);
+			return searchCampaigns;
+	}
+	
 	
 }

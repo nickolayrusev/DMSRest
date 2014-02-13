@@ -2,12 +2,15 @@ package org.mongo.domain;
 
 import java.io.Serializable;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * base entity class for campaign
  * @author rusev
  *
  */
-public class Campaign implements Serializable {
+@Document(collection="campaign")
+public class Campaign extends BaseMongoObject implements Serializable {
 	/**
 	 * 
 	 */
@@ -17,11 +20,19 @@ public class Campaign implements Serializable {
 	private String date;
 	private String sum;
 	private String text;
-	private Long id;
+	private Long campaignId;
 	private String smallImageUrl;
 	private String bigImageUrl;
 	private String campaignUrl;
+	private Integer type;
+	private String longDescription;
 	
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -52,12 +63,6 @@ public class Campaign implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public String getSmallImageUrl() {
 		return smallImageUrl;
 	}
@@ -76,12 +81,25 @@ public class Campaign implements Serializable {
 	public void setCampaignUrl(String campaignUrl) {
 		this.campaignUrl = campaignUrl;
 	}
+	public Long getCampaignId() {
+		return campaignId;
+	}
+	public void setCampaignId(Long campaignId) {
+		this.campaignId = campaignId;
+	}
 	@Override
 	public String toString() {
 		return "Campaign [title=" + title + ", description=" + description
 				+ ", date=" + date + ", sum=" + sum + ", text=" + text
-				+ ", id=" + id + ", smallImageUrl=" + smallImageUrl
-				+ ", bigImageUrl=" + bigImageUrl + ", campaignUrl="
-				+ campaignUrl + "]";
+				+ ", campaignId=" + campaignId + ", smallImageUrl="
+				+ smallImageUrl + ", bigImageUrl=" + bigImageUrl
+				+ ", campaignUrl=" + campaignUrl + "]";
 	}
+	public String getLongDescription() {
+		return longDescription;
+	}
+	public void setLongDescription(String longDescription) {
+		this.longDescription = longDescription;
+	}
+
 }

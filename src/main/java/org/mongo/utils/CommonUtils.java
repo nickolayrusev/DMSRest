@@ -1,10 +1,14 @@
 package org.mongo.utils;
 
+import static org.springframework.util.Assert.notNull;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
@@ -55,6 +59,26 @@ public class CommonUtils {
 		}
 		return StringUtils.EMPTY;
 	}
+	public static String parseCampaignLongDescription(String url){
+		notNull(url, "url is required");
+		Document doc = null;
+		try {
+			doc = Jsoup.connect(url).get();
+			logger.info("hitting url: " + doc.baseUri());
+		} catch (IOException e) {
+			logger.error("io exc",e);
+			return StringUtils.EMPTY;
+		}
+		StringBuilder builder = new StringBuilder();
+		Elements paragraphs = doc.select("p");
+		for(int i = 0;i<paragraphs.size();i++){
+			if(i==0 || i==1 || i==2)
+				continue;
+			builder.append(paragraphs.get(i).text());
+		}
+		System.out.println(builder.toString());
+		return builder.toString();
+	}
 	/**
 	 * spage (type of campaign) :
 	 * 0 - people ; 1 - organization ; 2 - other
@@ -93,7 +117,7 @@ public class CommonUtils {
 			String imgUrl = element.select("img").attr("src");
 			
 			Campaign campaign = new Campaign();
-			campaign.setId(Long.parseLong(item));
+			campaign.setCampaignId((Long.parseLong(item)));
 			campaign.setTitle(titleText.split(" - ")[0]);
 			campaign.setText(dmsText);
 			campaign.setDescription(anonceText);
@@ -102,10 +126,46 @@ public class CommonUtils {
 			campaign.setSmallImageUrl(imgUrl);
 			campaign.setBigImageUrl(imgUrl.replace("file1", "file2"));
 			campaign.setCampaignUrl(Constants.WEBSITE+hrefAttribute);
-			
+			campaign.setType(type);
+			campaign.setLongDescription(parseCampaignLongDescription(Constants.WEBSITE+hrefAttribute));
 			lstCampaigns.add(campaign);
 		}
 		
 		return lstCampaigns;
+	}
+	
+	public static String normalizeSpaces(String inputString){
+		//(?<! [a-z]| [a-z]{2})(\.|\?|\!)(?! |\d|\.)
+		//http://regex101.com/r/zE4pI4#python
+		if(inputString==null)
+			throw new IllegalArgumentException();
+		Pattern pattern = Pattern.compile("(?<! [a-z]| [a-z]{2})[\\.|,|\\?|\\!](?! |\\d|\\.)");
+		Matcher matcher = pattern.matcher(inputString);
+		StringBuffer builder=new StringBuffer();
+		while (matcher.find()) {
+		    int s = matcher.start();
+		    matcher.appendReplacement(builder, inputString.charAt(s)+" ");
+		}
+		matcher.appendTail(builder);
+		return builder.toString();
+	}
+	
+	public static List<Campaign> parseAllCampaigns(){
+		List<Campaign> campaigns = new ArrayList<Campaign>();
+		int i = 0,j = 0;
+		do {
+			List<Campaign> camps = parseCampaignByPage(i, j);
+			campaigns.addAll(camps);
+			
+			if(!camps.isEmpty()){
+				i++;
+			}else{
+				i=0;
+				j++;
+			}
+				
+		} while (j!=3);
+		
+		return campaigns;
 	}
 }
